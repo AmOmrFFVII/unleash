@@ -393,6 +393,73 @@ Object {
         },
         "type": "array",
       },
+      "projectEnvironmentSchema": Object {
+        "additionalProperties": false,
+        "properties": Object {
+          "environment": Object {
+            "type": "string",
+          },
+        },
+        "required": Array [
+          "environment",
+        ],
+        "type": "object",
+      },
+      "projectSchema": Object {
+        "additionalProperties": false,
+        "properties": Object {
+          "createdAt": Object {
+            "format": "date-time",
+            "type": "string",
+          },
+          "description": Object {
+            "type": "string",
+          },
+          "featureCount": Object {
+            "type": "number",
+          },
+          "health": Object {
+            "type": "number",
+          },
+          "id": Object {
+            "type": "string",
+          },
+          "memberCount": Object {
+            "type": "number",
+          },
+          "name": Object {
+            "type": "string",
+          },
+          "updatedAt": Object {
+            "format": "date-time",
+            "type": "string",
+          },
+        },
+        "required": Array [
+          "id",
+          "name",
+        ],
+        "type": "object",
+      },
+      "projectsSchema": Object {
+        "additionalProperties": false,
+        "properties": Object {
+          "projects": Object {
+            "items": Object {
+              "$ref": "#/components/schemas/projectSchema",
+            },
+            "type": "array",
+          },
+          "version": Object {
+            "type": "integer",
+          },
+        },
+        "required": Array [
+          "version",
+          "projects",
+        ],
+        "type": "object",
+      },
       "strategySchema": Object {
         "additionalProperties": false,
         "properties": Object {
@@ -584,6 +651,7 @@ Object {
     "/api/admin/archive/features": Object {
       "get": Object {
         "deprecated": true,
+        "operationId": "getArchivedFeatures",
         "responses": Object {
           "200": Object {
             "content": Object {
@@ -604,6 +672,7 @@ Object {
     "/api/admin/archive/features/{projectId}": Object {
       "get": Object {
         "deprecated": true,
+        "operationId": "getArchivedFeaturesByProjectId",
         "parameters": Array [
           Object {
             "in": "path",
@@ -624,6 +693,66 @@ Object {
               },
             },
             "description": "featuresSchema",
+          },
+        },
+        "tags": Array [
+          "admin",
+        ],
+      },
+    },
+    "/api/admin/archive/revive/{featureName}": Object {
+      "post": Object {
+        "operationId": "reviveFeature",
+        "parameters": Array [
+          Object {
+            "in": "path",
+            "name": "featureName",
+            "required": true,
+            "schema": Object {
+              "type": "string",
+            },
+          },
+        ],
+        "responses": Object {
+          "200": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "$ref": "#/components/schemas/emptySchema",
+                },
+              },
+            },
+            "description": "emptySchema",
+          },
+        },
+        "tags": Array [
+          "admin",
+        ],
+      },
+    },
+    "/api/admin/archive/{featureName}": Object {
+      "delete": Object {
+        "operationId": "deleteFeature",
+        "parameters": Array [
+          Object {
+            "in": "path",
+            "name": "featureName",
+            "required": true,
+            "schema": Object {
+              "type": "string",
+            },
+          },
+        ],
+        "responses": Object {
+          "200": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "$ref": "#/components/schemas/emptySchema",
+                },
+              },
+            },
+            "description": "emptySchema",
           },
         },
         "tags": Array [
@@ -764,6 +893,105 @@ Object {
           Object {
             "in": "path",
             "name": "value",
+            "required": true,
+            "schema": Object {
+              "type": "string",
+            },
+          },
+        ],
+        "responses": Object {
+          "200": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "$ref": "#/components/schemas/emptySchema",
+                },
+              },
+            },
+            "description": "emptySchema",
+          },
+        },
+        "tags": Array [
+          "admin",
+        ],
+      },
+    },
+    "/api/admin/projects": Object {
+      "get": Object {
+        "operationId": "getProjects",
+        "responses": Object {
+          "200": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "$ref": "#/components/schemas/projectsSchema",
+                },
+              },
+            },
+            "description": "projectsSchema",
+          },
+        },
+        "tags": Array [
+          "admin",
+        ],
+      },
+    },
+    "/api/admin/projects/{projectId}/environments": Object {
+      "post": Object {
+        "operationId": "addEnvironmentToProject",
+        "parameters": Array [
+          Object {
+            "in": "path",
+            "name": "projectId",
+            "required": true,
+            "schema": Object {
+              "type": "string",
+            },
+          },
+        ],
+        "requestBody": Object {
+          "content": Object {
+            "application/json": Object {
+              "schema": Object {
+                "$ref": "#/components/schemas/projectEnvironmentSchema",
+              },
+            },
+          },
+          "description": "projectEnvironmentSchema",
+          "required": true,
+        },
+        "responses": Object {
+          "200": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "$ref": "#/components/schemas/emptySchema",
+                },
+              },
+            },
+            "description": "emptySchema",
+          },
+        },
+        "tags": Array [
+          "admin",
+        ],
+      },
+    },
+    "/api/admin/projects/{projectId}/environments/{environment}": Object {
+      "delete": Object {
+        "operationId": "removeEnvironmentFromProject",
+        "parameters": Array [
+          Object {
+            "in": "path",
+            "name": "projectId",
+            "required": true,
+            "schema": Object {
+              "type": "string",
+            },
+          },
+          Object {
+            "in": "path",
+            "name": "environment",
             "required": true,
             "schema": Object {
               "type": "string",

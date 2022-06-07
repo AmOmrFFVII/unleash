@@ -15,6 +15,9 @@ import { overrideSchema } from './spec/override-schema';
 import { parametersSchema } from './spec/parameters-schema';
 import { patchSchema } from './spec/patch-schema';
 import { patchesSchema } from './spec/patches-schema';
+import { projectEnvironmentSchema } from './spec/project-environment-schema';
+import { projectSchema } from './spec/project-schema';
+import { projectsSchema } from './spec/projects-schema';
 import { strategySchema } from './spec/strategy-schema';
 import { tagSchema } from './spec/tag-schema';
 import { tagsSchema } from './spec/tags-schema';
@@ -31,11 +34,13 @@ export type SchemaRef = typeof schemas[keyof typeof schemas]['components'];
 
 export interface AdminApiOperation
     extends Omit<OpenAPIV3.OperationObject, 'tags'> {
+    operationId: string;
     tags: ['admin'];
 }
 
 export interface ClientApiOperation
     extends Omit<OpenAPIV3.OperationObject, 'tags'> {
+    operationId: string;
     tags: ['client'];
 }
 
@@ -54,6 +59,9 @@ export const schemas = {
     parametersSchema,
     patchSchema,
     patchesSchema,
+    projectEnvironmentSchema,
+    projectSchema,
+    projectsSchema,
     strategySchema,
     tagSchema,
     tagsSchema,
